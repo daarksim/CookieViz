@@ -16,48 +16,52 @@ You should have received a copy of the GNU General Public License
 along with CookieViz.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-require "connect.php";
+require 'connect.php';
+$requeteUrlReferer=$connexion->prepare('SELECT * FROM url_referer WHERE referer_domains=:referer GROUP BY url_domains, referer_domains');
+$requeteDomaine=$connexion->prepare('SELECT * FROM url_referer WHERE url_domains=:domain GROUP BY url_domains, referer_domains');
 
+$domain='';
 if(isset($_GET["domain"]))
 {
 	$domain = $_GET["domain"];
 }
-echo '<table id="infos">';
- echo "<thead>";
- echo "<tr>";
- echo "<th>From</th>";
- echo "<th>To</th>";
- echo "<th>Cookies</th>";
- echo "</tr>";
- echo "</thead>";
- echo "<tbody>";
-$query="SELECT * FROM url_referer WHERE referer_domains='".$domain."'GROUP BY url_domains, referer_domains";
-$result = mysql_query($query) or die ("Echec de la requête : ".$query." ". mysql_error());
-while ($line = mysql_fetch_assoc($result))
+echo '
+<table id="infos">
+	<thead>
+	<tr>
+		<th>From</th>
+		<th>To</th>
+		<th>Cookies</th>
+	</tr>
+	</thead>
+<tbody>';
+$requeteUrlReferer->execute(array('referer' => $domain));
+while ($line=$requeteUrlReferer->fetch(PDO::FETCH_ASSOC))
 {
-	echo "<tr>";
 	if ($line["is_cookie"] == 1)
 	{
-		echo "<td>".$line["referer_domains"];
-		echo "<td>".$line["url_domains"];
-		echo "<td>".$line["cookie"];
+		echo '
+		<tr>
+			<td>'.$line['referer_domains'].'</td>
+			<td>'.$line['url_domains'].'</td>
+			<td>1</td>
+		</tr>';
 	}
-	echo "</tr>";
 }
-$query="SELECT * FROM url_referer WHERE url_domains='".$domain."'GROUP BY url_domains, referer_domains";
-$result = mysql_query($query) or die ("Echec de la requête : ".$query." ". mysql_error());
-while ($line = mysql_fetch_assoc($result))
+
+$requeteDomaine->execute(array('domain' => $domain));
+while ($line=$requeteDomaine->fetch(PDO::FETCH_ASSOC))
 {
-	echo "<tr>";
 	if ($line["is_cookie"] == 1)
 	{
-		echo "<td>".$line["referer_domains"];
-		echo "<td>".$line["url_domains"];
-		echo "<td>".$line["cookie"];
+		echo ' 
+		<tr>
+			<td>'.$line["referer_domains"].'</td>
+			<td>'.$line["url_domains"].'</td>
+			<td>'.$line["is_cookie"].'</td>
+		</tr>';
 	}
-	echo "</tr>";
 }
-echo "</tbody>";
-echo "</table>";
-require "disconnect.php";
-?>
+echo '
+</tbody>
+</table>';

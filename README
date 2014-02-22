@@ -4,7 +4,7 @@ Une vidéo présentant le fonctionnement de l'outil est disponible sur Youtube �
 
 Pour déployer le logiciel sur Linux et sur MAC, vous devez disposer d'un serveur web, un serveur de base de données mysql et PHP5
 
-Il existe deux versions du logiciel de détéction des cookies.
+Il existe deux versions du logiciel de détection des cookies.
 La première version du logiciel s'appuie sur le binaire tshark. La seconde s'appuie sur le binaire mitmdump.
 Seule la version mitmdump permet de surveiller l'utilisation des cookies par des sites tiers utilisant le protocole https.
 Selon la version, il sera nécessaire d'installer tshark ou mitmproxy.

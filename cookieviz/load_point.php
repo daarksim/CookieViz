@@ -26,18 +26,19 @@ class point_map
 	var $reference;
 	var $last_date;
 	var $domain;
-	function __construct($domain)
+	function __construct($domain, $connexion)
 	{
-		$this->domain = $domain;
-			$this->load_query = "SELECT * FROM url_referer GROUP BY url_domains, referer_domains, date ORDER BY date ASC";
+			$this->domain = $domain;
+			$this->load_query = $connexion->prepare('SELECT * FROM url_referer GROUP BY url_domains, referer_domains, date ORDER BY date ASC');
 			$this->load();
 	}
 	
 	function load()
 	{
-		$result = mysql_query($this->load_query) or die ("Echec de la requête : ".$this->load_query." ". mysql_error());
+		$this->load_query->execute();
+		//$result = mysql_query($this->load_query) or die ("Echec de la requête : ".$this->load_query." ". mysql_error());
 		$i = 0;
-		while ($line = mysql_fetch_assoc($result))
+		while ($line=$this->load_query->fetch(PDO::FETCH_ASSOC))
 		{
 			if ($line["url_domains"] != "")
 			{

@@ -16,12 +16,12 @@ You should have received a copy of the GNU General Public License
 along with CookieViz.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-$fichier="..\..\soft\.install";
-$fp = fopen($fichier,'r');
-$mdp = fgets($fp);
-fclose($fp);
 
-$link = mysql_connect('localhost', 'root', $mdp)
-    or die('Impossible de se connecter : ' . mysql_error());
-mysql_select_db('CookieViz') or die('Impossible de sélectionner la base de données');
+include '../config/config.php';
+$persist = array();
+if(persistant_mode){
+	$persist = array(PDO::ATTR_PERSISTENT => true);
+}
+$connexion = new PDO('mysql:host='.host.';port='.port.';dbname='.bdd, user, pass,$persist);
+
 ?>

@@ -73,9 +73,6 @@ along with CookieViz.  If not, see <http://www.gnu.org/licenses/>.
 				<div class="legende_img"><img  src="./img/cookie_link.png"/></div>
 			</div>
 			
-
-
-			
 		</div>
 		<div class="context_menu" name="context_menu" id="context_menu">
 			<div class="context_line" name="info" id="info">Info</div>

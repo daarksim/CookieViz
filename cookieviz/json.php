@@ -32,7 +32,7 @@ if(isset($_GET["domain"]))
 }
 
 $max_date = $init_max_date;
-$point_map = new point_map($domain);
+$point_map = new point_map($domain, $connexion);
 $map = $point_map->get_map();
 $write_nodes='[';
 $write_links='[';
